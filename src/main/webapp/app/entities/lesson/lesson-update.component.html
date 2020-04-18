@@ -1,0 +1,87 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-lesson-heading">Create or edit a Lesson</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                    <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lessonTime">Lesson Time</label>
+                    <div class="d-flex">
+                        <input id="field_lessonTime" type="datetime-local" class="form-control" name="lessonTime" formControlName="lessonTime" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('lessonTime')!.invalid && (editForm.get('lessonTime')!.dirty || editForm.get('lessonTime')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('lessonTime')?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('lessonTime')?.errors?.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lessonType">Lesson Type</label>
+                    <input type="text" class="form-control" name="lessonType" id="field_lessonType"
+                           formControlName="lessonType"/>
+                    <div *ngIf="editForm.get('lessonType')!.invalid && (editForm.get('lessonType')!.dirty || editForm.get('lessonType')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('lessonType')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_notes">Notes</label>
+                    <input type="text" class="form-control" name="notes" id="field_notes"
+                           formControlName="notes"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_approved">Approved</label>
+                    <input type="checkbox" class="form-control" name="approved" id="field_approved"
+                           formControlName="approved"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lessonToUser">Lesson To User</label>
+                    <select class="form-control" id="field_lessonToUser" name="lessonToUser" formControlName="lessonToUser">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id === editForm.get('lessonToUser')!.value?.id ? editForm.get('lessonToUser')!.value : userOption" *ngFor="let userOption of users; trackBy: trackById">{{ userOption.login }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
