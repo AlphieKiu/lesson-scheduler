@@ -19,6 +19,8 @@ import { UserService } from 'app/core/user/user.service';
 export class LessonUpdateComponent implements OnInit {
   isSaving = false;
   users: IUser[] = [];
+  min: any;
+  max: any;
 
   editForm = this.fb.group({
     id: [],
@@ -27,7 +29,7 @@ export class LessonUpdateComponent implements OnInit {
     lessonType: [null, [Validators.required]],
     notes: [],
     approved: [],
-    lessonToUser: []
+    lessonToUser: [null, Validators.required]
   });
 
   constructor(
@@ -38,6 +40,13 @@ export class LessonUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.min = moment()
+      .startOf('day')
+      .format(DATE_TIME_FORMAT);
+    this.max = moment()
+      .startOf('day')
+      .add(1, 'week')
+      .format(DATE_TIME_FORMAT);
     this.activatedRoute.data.subscribe(({ lesson }) => {
       if (!lesson.id) {
         const today = moment().startOf('day');

@@ -2,6 +2,7 @@ package com.alphiekiu.web.rest;
 
 import com.alphiekiu.LessonSchedulerApp;
 import com.alphiekiu.domain.Lesson;
+import com.alphiekiu.domain.User;
 import com.alphiekiu.repository.LessonRepository;
 import com.alphiekiu.web.rest.errors.ExceptionTranslator;
 
@@ -100,6 +101,11 @@ public class LessonResourceIT {
             .lessonType(DEFAULT_LESSON_TYPE)
             .notes(DEFAULT_NOTES)
             .approved(DEFAULT_APPROVED);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        lesson.setLessonToUser(user);
         return lesson;
     }
     /**
@@ -115,6 +121,11 @@ public class LessonResourceIT {
             .lessonType(UPDATED_LESSON_TYPE)
             .notes(UPDATED_NOTES)
             .approved(UPDATED_APPROVED);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        lesson.setLessonToUser(user);
         return lesson;
     }
 

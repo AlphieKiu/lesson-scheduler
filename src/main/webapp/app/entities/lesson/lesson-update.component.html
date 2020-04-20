@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_lessonTime">Lesson Time</label>
                     <div class="d-flex">
-                        <input id="field_lessonTime" type="datetime-local" class="form-control" name="lessonTime" formControlName="lessonTime" placeholder="YYYY-MM-DD HH:mm"/>
+                        <input id="field_lessonTime" type="datetime-local" min="{{min}}" max="{{max}}" class="form-control" name="lessonTime" formControlName="lessonTime" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
                     <div *ngIf="editForm.get('lessonTime')!.invalid && (editForm.get('lessonTime')!.dirty || editForm.get('lessonTime')!.touched)">
                         <small class="form-text text-danger"
@@ -58,7 +58,7 @@
                            formControlName="notes"/>
                 </div>
 
-                <div class="form-group">
+                <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-group">
                     <label class="form-control-label" for="field_approved">Approved</label>
                     <input type="checkbox" class="form-control" name="approved" id="field_approved"
                            formControlName="approved"/>
@@ -67,9 +67,15 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_lessonToUser">Lesson To User</label>
                     <select class="form-control" id="field_lessonToUser" name="lessonToUser" formControlName="lessonToUser">
-                        <option [ngValue]="null"></option>
+                        <option *ngIf="!editForm.get('lessonToUser')!.value" [ngValue]="null" selected></option>
                         <option [ngValue]="userOption.id === editForm.get('lessonToUser')!.value?.id ? editForm.get('lessonToUser')!.value : userOption" *ngFor="let userOption of users; trackBy: trackById">{{ userOption.login }}</option>
                     </select>
+                </div>
+                <div *ngIf="editForm.get('lessonToUser')!.invalid && (editForm.get('lessonToUser')!.dirty || editForm.get('lessonToUser')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('lessonToUser')?.errors?.required">
+                        This field is required.
+                    </small>
                 </div>
             </div>
 

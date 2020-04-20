@@ -42,7 +42,8 @@ public class Lesson implements Serializable {
     @Column(name = "approved")
     private Boolean approved;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties("lessons")
     private User lessonToUser;
 

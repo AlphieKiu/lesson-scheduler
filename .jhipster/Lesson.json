@@ -6,7 +6,9 @@
             "relationshipName": "lessonToUser",
             "otherEntityName": "user",
             "relationshipType": "many-to-one",
-            "relationshipValidateRules": [],
+            "relationshipValidateRules": [
+                "required"
+            ],
             "otherEntityField": "login",
             "ownerSide": true,
             "otherEntityRelationshipName": "lesson"

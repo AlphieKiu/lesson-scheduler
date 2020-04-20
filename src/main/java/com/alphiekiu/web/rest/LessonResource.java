@@ -2,6 +2,8 @@ package com.alphiekiu.web.rest;
 
 import com.alphiekiu.domain.Lesson;
 import com.alphiekiu.repository.LessonRepository;
+import com.alphiekiu.security.AuthoritiesConstants;
+import com.alphiekiu.security.SecurityUtils;
 import com.alphiekiu.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -94,8 +97,19 @@ public class LessonResource {
      */
     @GetMapping("/lessons")
     public ResponseEntity<List<Lesson>> getAllLessons(Pageable pageable) {
+
+        //how do i know if i am the admin?
         log.debug("REST request to get a page of Lessons");
-        Page<Lesson> page = lessonRepository.findAll(pageable);
+        Page<Lesson> page;
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            page = lessonRepository.findAll(pageable);
+        } else {
+            List<Lesson> lstPage = lessonRepository.findByLessonToUserIsCurrentUser();
+            page = new PageImpl<Lesson>(lstPage, pageable, lstPage.size());
+        }
+
+
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
