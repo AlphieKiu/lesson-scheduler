@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import './vendor';
 import { LessonSchedulerSharedModule } from 'app/shared/shared.module';
@@ -22,7 +23,8 @@ import { ErrorComponent } from './layouts/error/error.component';
     LessonSchedulerHomeModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     LessonSchedulerEntityModule,
-    LessonSchedulerAppRoutingModule
+    LessonSchedulerAppRoutingModule,
+    HttpClientModule
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
   bootstrap: [MainComponent]

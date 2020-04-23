@@ -45,7 +45,7 @@ export class LessonUpdateComponent implements OnInit {
       .format(DATE_TIME_FORMAT);
     this.max = moment()
       .startOf('day')
-      .add(1, 'week')
+      .add(10, 'day')
       .format(DATE_TIME_FORMAT);
     this.activatedRoute.data.subscribe(({ lesson }) => {
       if (!lesson.id) {
